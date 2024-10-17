@@ -241,18 +241,23 @@ with tab2:
     
     st.markdown("""# Failure""")
     st.data_editor(formatted_runs[formatted_runs['conclusion']=='failure'], 
-                   hide_index=True,
-                   column_config={
-                       'html_url': st.column_config.LinkColumn(),
-                   },)
+                    hide_index=True,
+                    key='failure',
+                    column_config={
+                        'html_url': st.column_config.LinkColumn(),
+                    },)
     
     st.markdown("""# Noch am Laufen""")
-    st.data_editor(formatted_runs[formatted_runs['status']!='completed'], hide_index=True,
+    st.data_editor(formatted_runs[formatted_runs['status']!='completed'], 
+                    hide_index=True,
+                    key='running',
                     column_config={'html_url': st.column_config.LinkColumn(), },
                    )
     
     st.markdown("""# Alle Daten""")
-    st.data_editor(formatted_runs, hide_index=True,
-                   column_config={'html_url': st.column_config.LinkColumn(), },
+    st.data_editor(formatted_runs, 
+                    hide_index=True,
+                    key='all',
+                    column_config={'html_url': st.column_config.LinkColumn(), },
                    )
     
