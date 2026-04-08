@@ -49,7 +49,7 @@ def get_workflowlist(base_url):
         print('workflows page', page)
         df_page = pd.DataFrame(page.json()['workflows'])
         print("Antahl Zeilen:", df_page.shape[0])
-        df = df._append(df_page)
+        df = pd.concat([df, df_page], ignore_index=True)
     return df
 
 def add_badge_url_manually(df):
@@ -90,7 +90,7 @@ def get_runs_list(page_max = 1000, per_page = 100):
         print(page)
         df_page = pd.DataFrame(page.json()['workflow_runs'])
         print("Antahl Zeilen:", df_page.shape[0])
-        runs = runs._append(df_page)
+        runs = pd.concat([runs, df_page], ignore_index=True)
 
         ctr += 1
         if ctr > no_pages:
