@@ -89,7 +89,7 @@ def get_runs_list(page_max = 1000, per_page = 100):
     for page in search_github(base_url, 'actions/runs', per_page):
         print(page)
         df_page = pd.DataFrame(page.json()['workflow_runs'])
-        print("Antahl Zeilen:", df_page.shape[0])
+        print("Anzahl Zeilen:", df_page.shape[0])
         runs = pd.concat([runs, df_page], ignore_index=True)
 
         ctr += 1
@@ -132,10 +132,18 @@ def plot_runs_conclusion(runs):
     """
     returns plotly sactter fig from pandas df
     """
-    fig = px.scatter(runs[runs['status']=='completed'], 
+    
+    runs_completed = runs[runs['status'] == 'completed']
+
+    color_map = build_conclusion_color_map(
+        runs_completed['conclusion'],
+        color_scale
+    )
+
+    fig = px.scatter(runs_completed, 
                      x='run_started_at', y='name', 
                      color='conclusion', symbol='conclusion',
-                     color_discrete_sequence=color_scale,#px.colors.qualitative.G10,
+                     color_discrete_map=color_map,
                      hover_data=['run_url'],
                      title='Runs mit Status completed',
                      height=700,
@@ -146,9 +154,16 @@ def plot_runs_pie(runs):
     """
     returns plotly pie fig from pandas df
     """
+
+    color_map = build_conclusion_color_map(
+        runs['conclusion'],
+        color_scale
+    )
+
     fig = px.pie(
         runs['conclusion'].value_counts(normalize=True).reset_index(), 
-        color_discrete_sequence=color_scale,#px.colors.qualitative.G10,
+        color='conclusion',
+        color_discrete_map=color_map,
         values='proportion', names='conclusion', title='Erfolgsquote der ausgewählten Ergebnisse',
         width=500)
     return fig
@@ -174,6 +189,33 @@ def plot_branch_pie(runs):
         values='proportion', names='head_branch', title='Verteilung nach Branch',
         width=500)
     return fig
+
+
+
+def build_conclusion_color_map(conclusions, base_scale):
+    """
+    We want to use a color scale and bind some of the colors to certain values.
+    This function makes this possible for github actions conclusion status
+    conclusions: Iterable of all conclusion values
+    base_scale:  complete color scale (e.g. ssz_color_scale)
+    """
+    fixed = {
+        "success": base_scale[0],
+        "failure": base_scale[1],
+    }
+
+    # Weitere Kategorien bestimmen (stabil sortiert)
+    remaining = sorted(set(conclusions) - fixed.keys())
+
+    # Restliche Farben verwenden
+    extra_colors = base_scale[2:]
+
+    dynamic = {
+        key: extra_colors[i % len(extra_colors)]
+        for i, key in enumerate(remaining)
+    }
+
+    return fixed | dynamic
 
 
 ############# The App
