@@ -205,7 +205,9 @@ def build_conclusion_color_map(conclusions, base_scale):
     }
 
     # Weitere Kategorien bestimmen (stabil sortiert)
-    remaining = sorted(set(conclusions) - fixed.keys())
+    remaining = sorted(
+        {str(c) for c in conclusions if pd.notna(c)} - fixed.keys()
+    )
 
     # Restliche Farben verwenden
     extra_colors = base_scale[2:]
