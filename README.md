@@ -21,9 +21,11 @@ Detailed information about single runs.
 
 ## Setup
 
-- The app is realized in streamlit and can be run locally via: `python -m streamlit run actions_monitor.py`
+- Requires Python 3.11+ and [uv](https://docs.astral.sh/uv/).
+- Install dependencies: `uv sync`
+- Run the app locally: `uv run streamlit run actions_monitor.py`
 - You need to create a [Github access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-fine-grained-personal-access-token) which should have read-only access to your repository.
-- For local testing you need to create a  `.streamlit/secrets.toml` file (see [Streamlit docs](https://docs.streamlit.io/deploy/streamlit-community-cloud/deploy-your-app/secrets-management)). The toml file contains the the access token an repo:
+- For local testing you need to create a  `.streamlit/secrets.toml` file (see [Streamlit docs](https://docs.streamlit.io/deploy/streamlit-community-cloud/deploy-your-app/secrets-management)). The toml file contains the access token and repo:
 
 ```
 

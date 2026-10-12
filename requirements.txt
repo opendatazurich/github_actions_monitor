@@ -1,4 +1,0 @@
-pandas
-plotly
-requests
-streamlit>=1.52.0

@@ -1,0 +1,22 @@
+[project]
+name = "github-actions-monitor"
+version = "0.1.0"
+description = "Streamlit app to monitor GitHub Actions workflow runs of a given repository."
+readme = "README.md"
+license = { file = "LICENSE" }
+authors = [{ name = "Open Data Zürich", email = "opendata@zuerich.ch" }]
+requires-python = ">=3.11"
+dependencies = [
+    "pandas",
+    "plotly",
+    "requests",
+    "streamlit>=1.52.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest",
+    "pytest-mock",
+    "responses",
+    "ruff",
+]
